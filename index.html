@@ -16,7 +16,7 @@
       <div class="container">
          <div class="cart">
             <div class="col-md-12 col-lg-10 mx-auto">
-               <div class="cart-item">
+               <div id="item-section" class="cart-item">
                   <div class="row">
                      <div class="col-md-7 center-item">
                         <img src="images/product-1.png" alt="">
@@ -25,17 +25,17 @@
 
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="minusIcon" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input type="text" id="itemCounter" class="form-control text-center" value="1">
+                           <button id="plusIcon" class="btn btn-default"><i class="fas fa-plus"></i></button>
                         </div>
-                        <h5>$1219</h5>
-                        <img src="images/remove.png" alt="" class="remove-item">
+                        <h5>$<span id="itemPrice">1219</span></h5>
+                        <img src="images/remove.png" alt="" id="removeBtn" class="remove-item">
                      </div>
                   </div>
                </div>
 
-               <div class="cart-item">
+               <div id="item-section2" class="cart-item">
                   <div class="row">
                      <div class="col-md-7 center-item mx-auto">
                         <img src="images/product-2.png" alt="">
@@ -48,8 +48,8 @@
                            <button class="btn btn-default"><i class="fas fa-plus"></i></button>
 
                         </div>
-                        <h5>$59</h5>
-                        <img src="images/remove.png" alt="" class="remove-item">
+                        <h5>$<span id="itemPrice2">59</span></h5>
+                        <img src="images/remove.png" alt="" id="removeBtn2" class="remove-item">
                      </div>
                   </div>
                </div>
@@ -64,9 +64,9 @@
                      </div>
 
                      <div class="col-md-4 status">
-                        <h5>$1,278</h5>
+                        <h5>$<span id="subTotalPrice">1278</span></h5>
                         <h5>$0</h5>
-                        <h5>$1,278</h5>
+                        <h5>$<span id="totalPrice">1,278</span></h5>
                      </div>
                   </div>
                </div>
@@ -77,6 +77,69 @@
          </div>
       </div>
    </section>
+
+   <script>
+      // Remove cart-item Section EventHandler
+      const removeBtn = document.getElementById("removeBtn");
+      removeBtn.addEventListener("click", function () {
+         removeItemSection("item-section");
+      })
+      const removeBtn2 = document.getElementById("removeBtn2");
+      removeBtn2.addEventListener("click", function () {
+         removeItemSection("item-section2");
+      })
+      // Common Remove cart-item Section function
+      function removeItemSection(id) {
+         const itemSection = document.getElementById(id);
+         itemSection.style.display = "none";
+      }
+
+      // Add more cart-item EventHandler
+      const itemPlus = document.getElementById("plusIcon");
+      itemPlus.addEventListener("click", function () {
+         const plusItem = getItemCount("itemCounter") + 1;
+         document.getElementById("itemCounter").value = plusItem;
+
+         signleItemPrice("itemCounter", 1219, "itemPrice")
+         getTotal("itemPrice", "itemPrice2")
+      })
+
+      // Less cart-item EventHandler
+      const itemMinus = document.getElementById("minusIcon");
+      itemMinus.addEventListener("click", function () {
+         const plusItem = getItemCount("itemCounter") - 1;
+         document.getElementById("itemCounter").value = plusItem;
+
+         signleItemPrice("itemCounter", 1219, "itemPrice")
+         getTotal("itemPrice", "itemPrice2")
+      })
+
+      // Signle Item total price calculate
+      function signleItemPrice(id, id2, id3) {
+         const priceCalculate = getItemCount(id) * id2;
+         document.getElementById(id3).innerText = priceCalculate;
+      }
+      // Total price calculate
+      function getTotal(id, id2) {
+         const countSubtotal = getPriceNum(id) + getPriceNum(id2);
+         document.getElementById("subTotalPrice").innerText = countSubtotal;
+         document.getElementById("totalPrice").innerText = countSubtotal;
+      }
+      // Get Price string to number common function
+      function getPriceNum(id) {
+         const defaultPrice = document.getElementById(id).innerText;
+         const priceNumber = parseFloat(defaultPrice);
+         return priceNumber;
+      }
+      // Get cart-item list common function
+      function getItemCount(id) {
+         const itemCount = document.getElementById(id).value;
+         const itemCountNumber = parseFloat(itemCount);
+         return itemCountNumber;
+      }
+   </script>
+
+
 </body>
 
 </html>
